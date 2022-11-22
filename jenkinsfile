@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+       stage('gitlab') {
+          steps {
+             echo 'Notify GitLab'
+             updateGitlabCommitStatus name: 'build', state: 'pending'
+             updateGitlabCommitStatus name: 'build', state: 'success'
+          }
+       }
+
+       stage('publish') {
+          steps {
+             sshagent(credentials: ['ca71fb3c-af04-4962-b6c0-d4f81782257e']) {
+                 sh 'pwd'
+                 sh 'rm -rf bridgen.org'
+                 sh 'git clone http://nigar503:64427Nigar@ec2-3-83-20-217.compute-1.amazonaws.com/nigar503/bridgen.org.git'
+                 sh 'ssh -o StrictHostKeyChecking=no -l ubuntu 172.31.29.157 "cd /home/ubuntu/bc && rm -rf *"'
+                 sh 'scp -r bridgen.org/* ubuntu@172.31.29.157:/home/ubuntu/bc'
+             }
+             
+          }
+       }
+       }
+    }
