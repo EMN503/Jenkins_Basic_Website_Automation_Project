@@ -10,3 +10,4 @@
     2. Container Initialising with docker-compose
     3. Jenkins Configuration
 
+You can subscribe to my profile to stay updated
